@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Draw · La Coupe des Cons 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="nav">
+      <a href="index.html" class="nav-logo">🏆 LCDC</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="draw.html" class="active">The Draw</a>
+        <a href="rules.html">Rules</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="page-hero">
+    <div class="page-title">The <span>Draw</span></div>
+    <div class="page-subtitle">One tier per day · 5–8 June 2026</div>
+  </div>
+
+  <div class="draw-page">
+
+    <div class="seed-proof">
+      <strong>🔒 Verifiable Random Draw</strong><br>
+      The draw was generated using a publicly verifiable random seed locked before any results were revealed.
+      Player numbers (1–12) were assigned independently from the team shuffle — two separate steps that cannot be manipulated simultaneously.<br><br>
+      <strong>Seed:</strong> <span id="seed-val">Draw not yet generated</span><br>
+      <strong>Timestamp:</strong> <span id="seed-ts">–</span>
+    </div>
+
+    <!-- TIER 4 -->
+    <div class="tier-section" id="tier4">
+      <div class="tier-header">
+        <div class="tier-num t4">TIER 4</div>
+        <div class="tier-info">
+          <div class="tier-title">The Underdogs</div>
+          <div class="tier-date">Friday 5 June 2026</div>
+        </div>
+      </div>
+      <div class="tier-teams-list t4-border">
+        Uzbekistan · Qatar · Iraq · South Africa · Saudi Arabia · Jordan · Bosnia &amp; Herz. · Cape Verde · Ghana · Haiti · Curaçao · New Zealand
+      </div>
+      <div class="assignments-grid" id="grid4">
+        <div class="pending-msg">⏳ Revealed Friday 5 June</div>
+      </div>
+    </div>
+
+    <!-- TIER 3 -->
+    <div class="tier-section" id="tier3">
+      <div class="tier-header">
+        <div class="tier-num t3">TIER 3</div>
+        <div class="tier-info">
+          <div class="tier-title">The Contenders</div>
+          <div class="tier-date">Saturday 6 June 2026</div>
+        </div>
+      </div>
+      <div class="tier-teams-list t3-border">
+        Algeria · Egypt · Canada · Norway · Panama · Ivory Coast · Sweden · Paraguay · Czechia · Scotland · DR Congo · Tunisia
+      </div>
+      <div class="assignments-grid" id="grid3">
+        <div class="pending-msg">⏳ Revealed Saturday 6 June</div>
+      </div>
+    </div>
+
+    <!-- TIER 2 -->
+    <div class="tier-section" id="tier2">
+      <div class="tier-header">
+        <div class="tier-num t2">TIER 2</div>
+        <div class="tier-info">
+          <div class="tier-title">The Challengers</div>
+          <div class="tier-date">Sunday 7 June 2026</div>
+        </div>
+      </div>
+      <div class="tier-teams-list t2-border">
+        Senegal · Mexico · USA · Uruguay · Japan · Switzerland · Iran · Türkiye · Austria · Ecuador · South Korea · Australia
+      </div>
+      <div class="assignments-grid" id="grid2">
+        <div class="pending-msg">⏳ Revealed Sunday 7 June</div>
+      </div>
+    </div>
+
+    <!-- TIER 1 -->
+    <div class="tier-section" id="tier1">
+      <div class="tier-header">
+        <div class="tier-num t1">TIER 1</div>
+        <div class="tier-info">
+          <div class="tier-title">The Favourites</div>
+          <div class="tier-date">Monday 8 June 2026</div>
+        </div>
+      </div>
+      <div class="tier-teams-list t1-border">
+        France · Spain · Argentina · England · Portugal · Brazil · Morocco · Netherlands · Belgium · Germany · Croatia · Colombia
+      </div>
+      <div class="assignments-grid" id="grid1">
+        <div class="pending-msg">⏳ Revealed Monday 8 June</div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-title">La Coupe des Cons 2026</div>
+      <div class="footer-sub">May the best Con win</div>
+    </div>
+  </footer>
+
+  <script src="draw-data.js"></script>
+  <script>
+    // Seed info
+    if (typeof DRAW_SEED !== 'undefined') {
+      document.getElementById('seed-val').textContent = DRAW_SEED.seed;
+      document.getElementById('seed-ts').textContent = DRAW_SEED.timestamp;
+    }
+
+    const FLAGS = {
+      "France":"🇫🇷","Spain":"🇪🇸","Argentina":"🇦🇷","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "Portugal":"🇵🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Netherlands":"🇳🇱",
+      "Belgium":"🇧🇪","Germany":"🇩🇪","Croatia":"🇭🇷","Colombia":"🇨🇴",
+      "Senegal":"🇸🇳","Mexico":"🇲🇽","USA":"🇺🇸","Uruguay":"🇺🇾",
+      "Japan":"🇯🇵","Switzerland":"🇨🇭","Iran":"🇮🇷","Türkiye":"🇹🇷",
+      "Austria":"🇦🇹","Ecuador":"🇪🇨","South Korea":"🇰🇷","Australia":"🇦🇺",
+      "Algeria":"🇩🇿","Egypt":"🇪🇬","Canada":"🇨🇦","Norway":"🇳🇴",
+      "Panama":"🇵🇦","Ivory Coast":"🇨🇮","Sweden":"🇸🇪","Paraguay":"🇵🇾",
+      "Czechia":"🇨🇿","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","DR Congo":"🇨🇩","Tunisia":"🇹🇳",
+      "Uzbekistan":"🇺🇿","Qatar":"🇶🇦","Iraq":"🇮🇶","South Africa":"🇿🇦",
+      "Saudi Arabia":"🇸🇦","Jordan":"🇯🇴","Bosnia & Herz.":"🇧🇦",
+      "Cape Verde":"🇨🇻","Ghana":"🇬🇭","Haiti":"🇭🇹","Curaçao":"🇨🇼","New Zealand":"🇳🇿"
+    };
+
+    const PLAYERS = ["Atom","Ruby","Liv","Rio","Gemma","Lucy","KB","Brett","KP","Greg","Cyndi","Fred"];
+
+    [1,2,3,4].forEach(function(t) {
+      if (typeof TIERS === 'undefined') return;
+      var tier = TIERS[t];
+      var grid = document.getElementById('grid' + t);
+      if (!tier || !grid) return;
+      if (!tier.revealed) return;
+
+      grid.innerHTML = '';
+      PLAYERS.forEach(function(player, i) {
+        var team = tier.assignments[i];
+        if (!team) return;
+        var flag = FLAGS[team] || '🏳️';
+        var card = document.createElement('div');
+        card.className = 'assignment-card';
+        card.innerHTML =
+          '<div class="ac-flag">' + flag + '</div>' +
+          '<div class="ac-player">' + player + '</div>' +
+          '<div class="ac-team">' + team + '</div>';
+        grid.appendChild(card);
+      });
+    });
+  </script>
+
+</body>
+</html>
