@@ -20,12 +20,8 @@ const TIERS = {
   4: {
     name: "The Underdogs",
     revealDate: "Friday 5 June 2026",
-    revealed: false,
-    // Fill this in on Friday. One team name per player, in order:
-    // Atom, Ruby, Liv, Rio, Gemma, Lucy, KB, Brett, KP, Greg, Cyndi, Fred
-    assignments: []
-    // Example when ready:
-    // assignments: ["Ghana","New Zealand","Haiti","Qatar","Iraq","Uzbekistan","Cape Verde","Saudi Arabia","Jordan","Bosnia & Herz.","Curaçao","South Africa"]
+    revealed: true,
+    assignments: ["Qatar","South Africa","New Zealand","Cape Verde","Saudi Arabia","Curaçao","Bosnia & Herz.","Uzbekistan","Jordan","Iraq","Haiti","Ghana"]
   },
 
   3: {
