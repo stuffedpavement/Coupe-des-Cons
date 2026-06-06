@@ -27,8 +27,8 @@ const TIERS = {
   3: {
     name: "The Contenders",
     revealDate: "Saturday 6 June 2026",
-    revealed: false,
-    assignments: []
+    revealed: true,
+    assignments: ["Scotland","Czechia","Tunisia","Egypt","Ivory Coast","Algeria","Canada","Norway","Panama","Paraguay","DR Congo","Sweden"]
   },
 
   2: {
