@@ -34,8 +34,8 @@ const TIERS = {
   2: {
     name: "The Challengers",
     revealDate: "Sunday 7 June 2026",
-    revealed: false,
-    assignments: []
+    revealed: true,
+    assignments: ["USA","Austria","Uruguay","Türkiye","Mexico","Australia","Switzerland","Japan","South Korea","Senegal","Iran","Ecuador"]
   },
 
   1: {
