@@ -41,8 +41,8 @@ const TIERS = {
   1: {
     name: "The Favourites",
     revealDate: "Monday 8 June 2026",
-    revealed: false,
-    assignments: []
+    revealed: true,
+    assignments: ["Spain","England","Germany","France","Morocco","Croatia","Portugal","Belgium","Argentina","Brazil","Netherlands","Colombia"]
   }
 
 };
