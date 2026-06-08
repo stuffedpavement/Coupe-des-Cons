@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Teams · La Coupe des Cons 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .teams-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .player-card {
+      background: var(--dark2);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .player-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,215,0,0.25);
+    }
+
+    .player-card-header {
+      background: var(--dark3);
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .player-card-name {
+      font-family: var(--font-d);
+      font-size: 2rem;
+      letter-spacing: 3px;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .player-card-sub {
+      font-family: var(--font-c);
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-top: 4px;
+    }
+
+    .player-card-teams {
+      padding: 14px 20px 18px;
+    }
+
+    .team-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .team-row:last-child {
+      border-bottom: none;
+    }
+
+    .team-flag {
+      font-size: 1.6rem;
+      flex-shrink: 0;
+      width: 32px;
+      text-align: center;
+    }
+
+    .team-info {
+      flex: 1;
+    }
+
+    .team-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--light);
+    }
+
+    .team-tier {
+      font-family: var(--font-c);
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .t1-label { color: var(--t1); }
+    .t2-label { color: var(--t2); }
+    .t3-label { color: var(--t3); }
+    .t4-label { color: var(--t4); }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="nav">
+      <a href="index.html" class="nav-logo">🏆 LCDC</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="draw.html">The Draw</a>
+        <a href="teams.html" class="active">My Teams</a>
+        <a href="rules.html">Rules</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="page-hero">
+    <div class="page-title">My <span>Teams</span></div>
+    <div class="page-subtitle">Everyone's full squad · La Coupe des Cons 2026</div>
+  </div>
+
+  <div class="teams-grid" id="teams-grid"></div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-title">La Coupe des Cons 2026</div>
+      <div class="footer-sub">May the best Con win</div>
+    </div>
+  </footer>
+
+  <script src="draw-data.js"></script>
+  <script>
+    const PLAYERS = ["Atom","Ruby","Liv","Rio","Gemma","Lucy","KB","Brett","KP","Greg","Cyndi","Fred"];
+
+    const FLAGS = {
+      "France":"🇫🇷","Spain":"🇪🇸","Argentina":"🇦🇷","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "Portugal":"🇵🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Netherlands":"🇳🇱",
+      "Belgium":"🇧🇪","Germany":"🇩🇪","Croatia":"🇭🇷","Colombia":"🇨🇴",
+      "Senegal":"🇸🇳","Mexico":"🇲🇽","USA":"🇺🇸","Uruguay":"🇺🇾",
+      "Japan":"🇯🇵","Switzerland":"🇨🇭","Iran":"🇮🇷","Türkiye":"🇹🇷",
+      "Austria":"🇦🇹","Ecuador":"🇪🇨","South Korea":"🇰🇷","Australia":"🇦🇺",
+      "Algeria":"🇩🇿","Egypt":"🇪🇬","Canada":"🇨🇦","Norway":"🇳🇴",
+      "Panama":"🇵🇦","Ivory Coast":"🇨🇮","Sweden":"🇸🇪","Paraguay":"🇵🇾",
+      "Czechia":"🇨🇿","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","DR Congo":"🇨🇩","Tunisia":"🇹🇳",
+      "Uzbekistan":"🇺🇿","Qatar":"🇶🇦","Iraq":"🇮🇶","South Africa":"🇿🇦",
+      "Saudi Arabia":"🇸🇦","Jordan":"🇯🇴","Bosnia & Herz.":"🇧🇦",
+      "Cape Verde":"🇨🇻","Ghana":"🇬🇭","Haiti":"🇭🇹","Curaçao":"🇨🇼","New Zealand":"🇳🇿"
+    };
+
+    const TIER_LABELS = {
+      1: { label: "Tier 1 · The Favourites", cls: "t1-label" },
+      2: { label: "Tier 2 · The Challengers", cls: "t2-label" },
+      3: { label: "Tier 3 · The Contenders", cls: "t3-label" },
+      4: { label: "Tier 4 · The Underdogs", cls: "t4-label" }
+    };
+
+    const grid = document.getElementById('teams-grid');
+
+    PLAYERS.forEach(function(player, i) {
+      const card = document.createElement('div');
+      card.className = 'player-card';
+
+      // Build team rows — show Tier 1 first (most exciting)
+      const tierOrder = [1, 2, 3, 4];
+      let teamsHtml = '';
+      tierOrder.forEach(function(tierNum) {
+        const team = TIERS[tierNum].assignments[i];
+        if (!team) return;
+        const flag = FLAGS[team] || '🏳️';
+        const tl = TIER_LABELS[tierNum];
+        teamsHtml += `
+          <div class="team-row">
+            <div class="team-flag">${flag}</div>
+            <div class="team-info">
+              <div class="team-name">${team}</div>
+              <div class="team-tier ${tl.cls}">${tl.label}</div>
+            </div>
+          </div>`;
+      });
+
+      card.innerHTML = `
+        <div class="player-card-header">
+          <div class="player-card-name">${player}</div>
+          <div class="player-card-sub">4 teams · World Cup 2026</div>
+        </div>
+        <div class="player-card-teams">${teamsHtml}</div>
+      `;
+
+      grid.appendChild(card);
+    });
+  </script>
+
+</body>
+</html>
