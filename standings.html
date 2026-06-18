@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Standings · La Coupe des Cons 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .standings-wrap { max-width: 800px; margin: 0 auto; padding: 0 24px 80px; }
+    .standings-note {
+      background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15);
+      border-radius: 6px; padding: 14px 18px; font-size: 0.85rem;
+      color: var(--light); opacity: 0.85; margin-bottom: 12px;
+      font-family: var(--font-c); letter-spacing: 0.5px; line-height: 1.6;
+    }
+    .updated-tag {
+      font-family: var(--font-c); font-size: 0.75rem; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--grey); margin-bottom: 28px;
+    }
+    .stand-table { width: 100%; border-collapse: collapse; }
+    .stand-table th {
+      font-family: var(--font-c); font-size: 0.72rem; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--grey); text-align: left;
+      padding: 10px 10px; border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .stand-table th.center, .stand-table td.center { text-align: center; }
+    .stand-table td {
+      padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.92rem; color: var(--light); vertical-align: middle;
+    }
+    .stand-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .pos { font-family: var(--font-d); font-size: 1.4rem; color: var(--grey); letter-spacing: 1px; width: 36px; }
+    .pname { font-family: var(--font-c); font-weight: 700; font-size: 1.05rem; letter-spacing: 1px; text-transform: uppercase; }
+    .pts-big { font-family: var(--font-d); font-size: 1.8rem; color: #fff; letter-spacing: 1px; }
+    .teams-mini { font-size: 0.72rem; color: var(--grey); line-height: 1.7; }
+    .tg { display:inline-block; padding: 1px 6px; border-radius: 3px; margin: 1px 2px 1px 0; font-size: 0.7rem; }
+    .tg-w { background: rgba(0,122,51,0.18); color:#90EE90; }
+    .tg-d { background: rgba(255,215,0,0.14); color:#FFD700; }
+    .tg-l { background: rgba(200,16,46,0.16); color:#ff7b7b; }
+    .spoon-row td { background: rgba(200,16,46,0.06) !important; }
+    .spoon-tag { font-family: var(--font-c); font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase; color: #ff7b7b; display:block; margin-top:2px; }
+    .legend { margin-top: 20px; font-size: 0.78rem; color: var(--grey); font-family: var(--font-c); letter-spacing: 1px; }
+    .legend span { margin-right: 14px; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="nav">
+      <a href="index.html" class="nav-logo">🏆 LCDC</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="draw.html">The Draw</a>
+        <a href="teams.html">My Teams</a>
+        <a href="standings.html" class="active">Standings</a>
+        <a href="rules.html">Rules</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="page-hero">
+    <div class="page-title">Wooden Spoon <span>Standings</span></div>
+    <div class="page-subtitle">Lowest points wins the spoon · Win = 3, Draw = 1</div>
+  </div>
+
+  <div class="standings-wrap">
+    <div class="standings-note">
+      🥄 This tracks the <strong>Wooden Spoon</strong> race only. Remember: <strong>lowest</strong> points takes the £15 booby prize. The Overall Winner (£30) goes to whoever owns the team that lifts the trophy, and Most Improved (£15) is decided by FIFA ranking climb after the tournament.
+    </div>
+    <div class="updated-tag" id="updated">Updated after Matchday 1 · all 48 teams played once</div>
+
+    <table class="stand-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Player</th>
+          <th>Teams &amp; Results</th>
+          <th class="center">Pts</th>
+        </tr>
+      </thead>
+      <tbody id="stand-body"></tbody>
+    </table>
+
+    <div class="legend">
+      <span><span class="tg tg-w">W</span> Win (3)</span>
+      <span><span class="tg tg-d">D</span> Draw (1)</span>
+      <span><span class="tg tg-l">L</span> Loss (0)</span>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-title">La Coupe des Cons 2026</div>
+      <div class="footer-sub">May the best Con win</div>
+    </div>
+  </footer>
+
+  <script>
+    // ============================================
+    // STANDINGS DATA — update after each matchday
+    // result: "W", "D" or "L" for each team's games so far
+    // ============================================
+    const PLAYERS_DATA = [
+      { name: "Atom",  teams: [["Spain","D"],["USA","W"],["Scotland","W"],["Qatar","D"]] },
+      { name: "Ruby",  teams: [["England","W"],["Austria","W"],["Czechia","L"],["South Africa","L"]] },
+      { name: "Liv",   teams: [["Germany","W"],["Uruguay","D"],["Tunisia","L"],["New Zealand","D"]] },
+      { name: "Rio",   teams: [["France","W"],["Türkiye","L"],["Egypt","D"],["Cape Verde","D"]] },
+      { name: "Gemma", teams: [["Morocco","D"],["Mexico","W"],["Ivory Coast","W"],["Saudi Arabia","D"]] },
+      { name: "Lucy",  teams: [["Croatia","L"],["Australia","W"],["Algeria","L"],["Curaçao","L"]] },
+      { name: "KB",    teams: [["Portugal","D"],["Switzerland","D"],["Canada","D"],["Bosnia & Herz.","D"]] },
+      { name: "Brett", teams: [["Belgium","D"],["Japan","D"],["Norway","W"],["Uzbekistan","L"]] },
+      { name: "KP",    teams: [["Argentina","W"],["South Korea","W"],["Panama","L"],["Jordan","L"]] },
+      { name: "Greg",  teams: [["Brazil","D"],["Senegal","L"],["Paraguay","L"],["Iraq","L"]] },
+      { name: "Cyndi", teams: [["Netherlands","D"],["Iran","D"],["DR Congo","D"],["Haiti","L"]] },
+      { name: "Fred",  teams: [["Colombia","W"],["Ecuador","L"],["Sweden","W"],["Ghana","W"]] }
+    ];
+
+    const FLAGS = {
+      "France":"🇫🇷","Spain":"🇪🇸","Argentina":"🇦🇷","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "Portugal":"🇵🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Netherlands":"🇳🇱",
+      "Belgium":"🇧🇪","Germany":"🇩🇪","Croatia":"🇭🇷","Colombia":"🇨🇴",
+      "Senegal":"🇸🇳","Mexico":"🇲🇽","USA":"🇺🇸","Uruguay":"🇺🇾",
+      "Japan":"🇯🇵","Switzerland":"🇨🇭","Iran":"🇮🇷","Türkiye":"🇹🇷",
+      "Austria":"🇦🇹","Ecuador":"🇪🇨","South Korea":"🇰🇷","Australia":"🇦🇺",
+      "Algeria":"🇩🇿","Egypt":"🇪🇬","Canada":"🇨🇦","Norway":"🇳🇴",
+      "Panama":"🇵🇦","Ivory Coast":"🇨🇮","Sweden":"🇸🇪","Paraguay":"🇵🇾",
+      "Czechia":"🇨🇿","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","DR Congo":"🇨🇩","Tunisia":"🇹🇳",
+      "Uzbekistan":"🇺🇿","Qatar":"🇶🇦","Iraq":"🇮🇶","South Africa":"🇿🇦",
+      "Saudi Arabia":"🇸🇦","Jordan":"🇯🇴","Bosnia & Herz.":"🇧🇦",
+      "Cape Verde":"🇨🇻","Ghana":"🇬🇭","Haiti":"🇭🇹","Curaçao":"🇨🇼","New Zealand":"🇳🇿"
+    };
+
+    const PTS = { W: 3, D: 1, L: 0 };
+
+    // Calculate totals
+    const standings = PLAYERS_DATA.map(p => {
+      let pts = 0;
+      p.teams.forEach(t => pts += PTS[t[1]]);
+      return { name: p.name, teams: p.teams, pts: pts };
+    });
+
+    // Sort highest to lowest (lowest = wooden spoon danger)
+    standings.sort((a, b) => b.pts - a.pts);
+
+    const lowestPts = Math.min(...standings.map(s => s.pts));
+
+    const body = document.getElementById('stand-body');
+    standings.forEach((row, i) => {
+      const tr = document.createElement('tr');
+      const isSpoon = row.pts === lowestPts;
+      if (isSpoon) tr.className = 'spoon-row';
+
+      const teamsHtml = row.teams.map(t => {
+        const flag = FLAGS[t[0]] || '';
+        const cls = t[1] === 'W' ? 'tg-w' : (t[1] === 'D' ? 'tg-d' : 'tg-l');
+        return `<span style="white-space:nowrap">${flag} ${t[0]} <span class="tg ${cls}">${t[1]}</span></span>`;
+      }).join('  ');
+
+      tr.innerHTML = `
+        <td class="pos">${i + 1}</td>
+        <td>
+          <span class="pname">${row.name}</span>
+          ${isSpoon ? '<span class="spoon-tag">🥄 spoon danger</span>' : ''}
+        </td>
+        <td><div class="teams-mini">${teamsHtml}</div></td>
+        <td class="center"><span class="pts-big">${row.pts}</span></td>
+      `;
+      body.appendChild(tr);
+    });
+  </script>
+
+</body>
+</html>
