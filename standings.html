@@ -63,7 +63,7 @@
 
   <div class="page-hero">
     <div class="page-title">Wooden Spoon <span>Standings</span></div>
-    <div class="page-subtitle">Lowest points wins the spoon · Win = 3, Draw = 1</div>
+    <div class="page-subtitle">Lowest points at the top · Win = 3, Draw = 1</div>
   </div>
 
   <div class="standings-wrap">
@@ -142,8 +142,8 @@
       return { name: p.name, teams: p.teams, pts: pts };
     });
 
-    // Sort highest to lowest (lowest = wooden spoon danger)
-    standings.sort((a, b) => b.pts - a.pts);
+    // Sort lowest to highest (lowest = wooden spoon danger, shown at top)
+    standings.sort((a, b) => a.pts - b.pts);
 
     const lowestPts = Math.min(...standings.map(s => s.pts));
 
