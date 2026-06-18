@@ -35,8 +35,8 @@
     .pos { font-family: var(--font-d); font-size: 1.4rem; color: var(--grey); letter-spacing: 1px; width: 36px; }
     .pname { font-family: var(--font-c); font-weight: 700; font-size: 1.05rem; letter-spacing: 1px; text-transform: uppercase; }
     .pts-big { font-family: var(--font-d); font-size: 1.8rem; color: #fff; letter-spacing: 1px; }
-    .teams-mini { font-size: 0.72rem; color: var(--grey); line-height: 1.7; }
-    .tg { display:inline-block; padding: 1px 6px; border-radius: 3px; margin: 1px 2px 1px 0; font-size: 0.7rem; }
+    .teams-mini { font-size: 0.92rem; color: var(--light); line-height: 2; }
+    .tg { display:inline-block; padding: 2px 9px; border-radius: 3px; margin: 1px 3px 1px 0; font-size: 0.85rem; font-weight: 700; }
     .tg-w { background: rgba(0,122,51,0.18); color:#90EE90; }
     .tg-d { background: rgba(255,215,0,0.14); color:#FFD700; }
     .tg-l { background: rgba(200,16,46,0.16); color:#ff7b7b; }
@@ -156,8 +156,8 @@
       const teamsHtml = row.teams.map(t => {
         const flag = FLAGS[t[0]] || '';
         const cls = t[1] === 'W' ? 'tg-w' : (t[1] === 'D' ? 'tg-d' : 'tg-l');
-        return `<span style="white-space:nowrap">${flag} ${t[0]} <span class="tg ${cls}">${t[1]}</span></span>`;
-      }).join('  ');
+        return `<span style="white-space:nowrap; margin-right:14px; display:inline-block">${flag} ${t[0]} <span class="tg ${cls}">${t[1]}</span></span>`;
+      }).join('');
 
       tr.innerHTML = `
         <td class="pos">${i + 1}</td>
