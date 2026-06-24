@@ -70,7 +70,7 @@
     <div class="standings-note">
       🥄 This tracks the <strong>Wooden Spoon</strong> race only. Remember: <strong>lowest</strong> points takes the £15 booby prize. The Overall Winner (£30) goes to whoever owns the team that lifts the trophy, and Most Improved (£15) is decided by FIFA ranking climb after the tournament.
     </div>
-    <div class="updated-tag" id="updated">Updated after Matchday 1 · all 48 teams played once</div>
+    <div class="updated-tag" id="updated">Updated after Matchday 2 · two games per team</div>
 
     <table class="stand-table">
       <thead>
@@ -104,18 +104,18 @@
     // result: "W", "D" or "L" for each team's games so far
     // ============================================
     const PLAYERS_DATA = [
-      { name: "Atom",  teams: [["Spain","D"],["USA","W"],["Scotland","W"],["Qatar","D"]] },
-      { name: "Ruby",  teams: [["England","W"],["Austria","W"],["Czechia","L"],["South Africa","L"]] },
-      { name: "Liv",   teams: [["Germany","W"],["Uruguay","D"],["Tunisia","L"],["New Zealand","D"]] },
-      { name: "Rio",   teams: [["France","W"],["Türkiye","L"],["Egypt","D"],["Cape Verde","D"]] },
-      { name: "Gemma", teams: [["Morocco","D"],["Mexico","W"],["Ivory Coast","W"],["Saudi Arabia","D"]] },
-      { name: "Lucy",  teams: [["Croatia","L"],["Australia","W"],["Algeria","L"],["Curaçao","L"]] },
-      { name: "KB",    teams: [["Portugal","D"],["Switzerland","D"],["Canada","D"],["Bosnia & Herz.","D"]] },
-      { name: "Brett", teams: [["Belgium","D"],["Japan","D"],["Norway","W"],["Uzbekistan","L"]] },
-      { name: "KP",    teams: [["Argentina","W"],["South Korea","W"],["Panama","L"],["Jordan","L"]] },
-      { name: "Greg",  teams: [["Brazil","D"],["Senegal","L"],["Paraguay","L"],["Iraq","L"]] },
-      { name: "Cyndi", teams: [["Netherlands","D"],["Iran","D"],["DR Congo","D"],["Haiti","L"]] },
-      { name: "Fred",  teams: [["Colombia","W"],["Ecuador","L"],["Sweden","W"],["Ghana","W"]] }
+      { name: "Atom",  teams: [["Spain","D"],["Spain","W"],["USA","W"],["USA","W"],["Scotland","W"],["Scotland","L"],["Qatar","D"],["Qatar","L"]] },
+      { name: "Ruby",  teams: [["England","W"],["England","D"],["Austria","W"],["Austria","L"],["Czechia","L"],["Czechia","D"],["South Africa","L"],["South Africa","D"]] },
+      { name: "Liv",   teams: [["Germany","W"],["Germany","W"],["Uruguay","D"],["Uruguay","D"],["Tunisia","L"],["Tunisia","L"],["New Zealand","D"],["New Zealand","L"]] },
+      { name: "Rio",   teams: [["France","W"],["France","W"],["Türkiye","L"],["Türkiye","L"],["Egypt","D"],["Egypt","W"],["Cape Verde","D"],["Cape Verde","D"]] },
+      { name: "Gemma", teams: [["Morocco","D"],["Morocco","W"],["Mexico","W"],["Mexico","W"],["Ivory Coast","W"],["Ivory Coast","L"],["Saudi Arabia","D"],["Saudi Arabia","L"]] },
+      { name: "Lucy",  teams: [["Croatia","L"],["Croatia","L"],["Australia","W"],["Australia","L"],["Algeria","L"],["Algeria","W"],["Curaçao","L"],["Curaçao","D"]] },
+      { name: "KB",    teams: [["Portugal","D"],["Portugal","W"],["Switzerland","D"],["Switzerland","W"],["Canada","D"],["Canada","W"],["Bosnia & Herz.","D"],["Bosnia & Herz.","L"]] },
+      { name: "Brett", teams: [["Belgium","D"],["Belgium","D"],["Japan","D"],["Japan","W"],["Norway","W"],["Norway","W"],["Uzbekistan","L"],["Uzbekistan","L"]] },
+      { name: "KP",    teams: [["Argentina","W"],["Argentina","W"],["South Korea","W"],["South Korea","L"],["Panama","L"],["Panama","L"],["Jordan","L"],["Jordan","L"]] },
+      { name: "Greg",  teams: [["Brazil","D"],["Brazil","W"],["Senegal","L"],["Senegal","L"],["Paraguay","L"],["Paraguay","W"],["Iraq","L"],["Iraq","L"]] },
+      { name: "Cyndi", teams: [["Netherlands","D"],["Netherlands","W"],["Iran","D"],["Iran","D"],["DR Congo","D"],["DR Congo","L"],["Haiti","L"],["Haiti","L"]] },
+      { name: "Fred",  teams: [["Colombia","W"],["Colombia","W"],["Ecuador","L"],["Ecuador","D"],["Sweden","W"],["Sweden","L"],["Ghana","W"],["Ghana","D"]] }
     ];
 
     const FLAGS = {
@@ -135,11 +135,16 @@
 
     const PTS = { W: 3, D: 1, L: 0 };
 
-    // Calculate totals
+    // Calculate totals — teams array has 2 entries per team (game 1, game 2)
     const standings = PLAYERS_DATA.map(p => {
       let pts = 0;
       p.teams.forEach(t => pts += PTS[t[1]]);
-      return { name: p.name, teams: p.teams, pts: pts };
+      // Group results by team name
+      const grouped = [];
+      for (let i = 0; i < p.teams.length; i += 2) {
+        grouped.push({ name: p.teams[i][0], r1: p.teams[i][1], r2: p.teams[i+1][1] });
+      }
+      return { name: p.name, teams: grouped, pts: pts };
     });
 
     // Sort lowest to highest (lowest = wooden spoon danger, shown at top)
@@ -154,9 +159,12 @@
       if (isSpoon) tr.className = 'spoon-row';
 
       const teamsHtml = row.teams.map(t => {
-        const flag = FLAGS[t[0]] || '';
-        const cls = t[1] === 'W' ? 'tg-w' : (t[1] === 'D' ? 'tg-d' : 'tg-l');
-        return `<span style="white-space:nowrap; margin-right:14px; display:inline-block">${flag} ${t[0]} <span class="tg ${cls}">${t[1]}</span></span>`;
+        const flag = FLAGS[t.name] || '';
+        const tag = (r) => {
+          const cls = r === 'W' ? 'tg-w' : (r === 'D' ? 'tg-d' : 'tg-l');
+          return `<span class="tg ${cls}">${r}</span>`;
+        };
+        return `<span style="white-space:nowrap; margin-right:16px; display:inline-block">${flag} ${t.name} ${tag(t.r1)}${tag(t.r2)}</span>`;
       }).join('');
 
       tr.innerHTML = `
